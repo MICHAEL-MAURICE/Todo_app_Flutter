@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/shared/Cubit/Cubit.dart';
 
 
 
@@ -46,16 +47,58 @@ validator: (s){
 
 
 
-Widget CardItem(Map m)=>Card(
+Widget CardItem(Map m,context)=>Card(
 elevation: 0.0,
   color: Colors.transparent,
-  child:   ListTile(
+  child:   Dismissible(
+    key: Key(m['id'].toString()),
+    background: Container(
+      padding: EdgeInsets.all(20.0),
+      color: Colors.red,
 
-    contentPadding: EdgeInsets.all(10.0),
+    child: Row(
+      
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Icon(Icons.restore_from_trash_sharp,color: Colors.black,),
+      ],
+    ),
+    ),
+    onDismissed: (dirction){
 
-    leading:CircleAvatar(radius: 60,child: Center(child: Text("    ${m["time"]}  ")),),
-    title: Text(m["title"],style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold),),
-    subtitle: Text(m["date"]),
+      Appcubit.get(context).deleteDatabase(id: m['id']);
+    },
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
 
+mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+
+            CircleAvatar(radius: 33,child: Center(child: Text("${m["time"]}" )),),
+Column(children: [
+      Text(m["title"],style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold),),
+      Text(m["date"]),
+],)
+           , Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(onPressed: (){
+                  Appcubit.get(context).updateDatabase(id:m['id'], Status: 'done');
+
+                }, icon: Icon(Icons.check_box,color: Colors.green,))
+
+                , IconButton(onPressed: (){Appcubit.get(context).updateDatabase(id:m['id'], Status: 'Arcived');}, icon: Icon(Icons.archive,color: Colors.black54,))
+              ],
+            ),
+
+          ]
+
+
+
+
+
+      ),
+    ),
   ),
 );

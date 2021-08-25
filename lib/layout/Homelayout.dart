@@ -16,10 +16,10 @@ class Home_layout extends StatelessWidget
   
 
 
-  bool isbottomsheetShown =false;
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
   late GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  IconData iconButton  = Icons.edit;
+
   var titleController=TextEditingController();
   var timeController=TextEditingController();
   var  dateController=TextEditingController();
@@ -30,7 +30,13 @@ class Home_layout extends StatelessWidget
       create: (context)=>Appcubit()..createDatabase(),
       
       child: BlocConsumer<Appcubit,AppState>(
-        listener: (context,state){},
+        listener: (context,state){
+          if(state is Insertdatabasestate){
+            Navigator.pop(context);
+
+          }
+
+        },
         builder: (context,state){
           Appcubit cubit = Appcubit.get(context);
           return Scaffold(
@@ -48,132 +54,104 @@ class Home_layout extends StatelessWidget
 
 
 
-            // floatingActionButton: FloatingActionButton(onPressed: () {
-            //
-            //   if(isbottomsheetShown )
-            //   {
-            //     if(formKey.currentState!.validate())
-            //     {
-            //
-            //       // inserttoDatabase(titleController.text ,
-            //       //     dateController.text,
-            //       //     timeController.text
-            //
-            //       ).then((value) {
-            //
-            //         Navigator.pop(context);
-            //         isbottomsheetShown=false;
-            //         // setState(() {
-            //         //
-            //         //
-            //         //   iconButton = Icons.edit;
-            //         // });
-            //
-            //       });
-            //
-            //       // getDataFromDatabase(database).then((value){
-            //       //   // setState(() {
-            //       //   //
-            //       //   //   tasks=value;
-            //       //   // });
-            //       //
-            //       // });
-            //
-            //     }
-            //     else{
-            //       return null;
-            //     }
-            //
-            //   }
-            //   else{
-            //     scaffoldKey.currentState!.showBottomSheet((context)=>Container(
-            //       padding: EdgeInsets.all(22.0),
-            //       color: Colors.white,
-            //       child: Form(
-            //         key: formKey,
-            //         child: Column(
-            //           mainAxisSize:MainAxisSize.min ,
-            //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //           children: [
-            //             defultTextField(controller: titleController,
-            //                 type: TextInputType.text,
-            //                 validation: (String value){
-            //                   if(value.isEmpty)
-            //                   {return "This field is Required";}
-            //                   else
-            //                     return null;
-            //                 },
-            //                 onTap: ()=>print ("taped"),
-            //                 prefix: Icons.title
-            //                 ,title:'Task Title'
-            //                 ,isClicked: true),
-            //
-            //             SizedBox(height: 20,),
-            //             defultTextField(controller: timeController,
-            //                 type: TextInputType.datetime,
-            //                 validation: (String ?value){
-            //                   if(value==null || value.trim().length==0)
-            //                   {return "This field is Required";}
-            //                   return null;
-            //                 }, prefix: Icons.watch_later_outlined
-            //                 ,title:'Task Time'
-            //                 ,isClicked: true,
-            //                 onTap: (){
-            //                   showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value){
-            //
-            //                     timeController.text=value!.format(context).toString();
-            //
-            //
-            //                   });
-            //
-            //                 }),
-            //             SizedBox(height: 20,),
-            //             defultTextField(controller: dateController,
-            //                 type: TextInputType.datetime,
-            //                 validation: (String ?value){
-            //                   if(value==null || value.trim().length==0)
-            //                   {return "This field is Required";}
-            //                   return null;
-            //                 }, prefix: Icons.calendar_today
-            //                 ,title:'Date Time'
-            //                 ,isClicked: true,
-            //                 onTap: (){
-            //                   showDatePicker(context: context, initialDate:DateTime.now() , firstDate: DateTime.now(),
-            //                       lastDate: DateTime.parse("2100-12-12")).then((value){
-            //
-            //                     dateController.text= "${value?.day} /${value?.month} /${value?.year}";
-            //
-            //
-            //                   });
-            //
-            //                 })
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //
-            //
-            //
-            //         elevation:20.0
-            //     ).closed.then((value)   {
-            //
-            //       isbottomsheetShown=false;
-            //       // setState(() {
-            //       //
-            //       //
-            //       //   iconButton = Icons.edit;
-            //       // });
-            //
-            //     } );
-            //
-            //     //
-            //     // setState(() {
-            //     //   iconButton =Icons.add;
-            //     // });
-            //     isbottomsheetShown=true;
-            //   }
-            //
-            // },child: Icon(iconButton,size:33.0,),),
+            floatingActionButton: FloatingActionButton(onPressed: () {
+
+              if(cubit.isbottomsheetShown )
+              {
+                if(formKey.currentState!.validate())
+                {
+
+                  cubit.inserttoDatabase(titleController.text, dateController.text, timeController.text);
+
+timeController.text="";
+titleController.text="";
+dateController.text="";
+                }
+                else{
+                  return null;
+                }
+
+              }
+              else{
+                scaffoldKey.currentState!.showBottomSheet((context)=>Container(
+                  padding: EdgeInsets.all(22.0),
+                  color: Colors.white,
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize:MainAxisSize.min ,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        defultTextField(controller: titleController,
+                            type: TextInputType.text,
+                            validation: (String value){
+                              if(value.isEmpty)
+                              {return "This field is Required";}
+                              else
+                                return null;
+                            },
+                            onTap: ()=>print ("taped"),
+                            prefix: Icons.title
+                            ,title:'Task Title'
+                            ,isClicked: true),
+
+                        SizedBox(height: 20,),
+                        defultTextField(controller: timeController,
+                            type: TextInputType.datetime,
+                            validation: (String ?value){
+                              if(value==null || value.trim().length==0)
+                              {return "This field is Required";}
+                              return null;
+                            }, prefix: Icons.watch_later_outlined
+                            ,title:'Task Time'
+                            ,isClicked: true,
+                            onTap: (){
+                              showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value){
+
+                                timeController.text=value!.format(context).toString();
+
+
+                              });
+
+                            }),
+                        SizedBox(height: 20,),
+                        defultTextField(controller: dateController,
+                            type: TextInputType.datetime,
+                            validation: (String ?value){
+                              if(value==null || value.trim().length==0)
+                              {return "This field is Required";}
+                              return null;
+                            }, prefix: Icons.calendar_today
+                            ,title:'Date Time'
+                            ,isClicked: true,
+                            onTap: (){
+                              showDatePicker(context: context, initialDate:DateTime.now() , firstDate: DateTime.now(),
+                                  lastDate: DateTime.parse("2100-12-12")).then((value){
+
+                                dateController.text= "${value?.day} /${value?.month} /${value?.year}";
+
+
+                              });
+
+                            })
+                      ],
+                    ),
+                  ),
+                ),
+
+
+
+                    elevation:20.0
+                ).closed.then((value)   {
+
+                  cubit.changeButtomsheetState(isShow: false, icon:Icons.edit );
+
+                } );
+              cubit.changeButtomsheetState(isShow: true, icon:Icons.add );
+                
+              }
+
+            },child: Icon(cubit.iconButton,size:33.0,),),
             bottomNavigationBar: BottomNavigationBar(
               elevation: 0.0,
               currentIndex: cubit.currentIndex,
