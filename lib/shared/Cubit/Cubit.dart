@@ -20,6 +20,7 @@ class Appcubit extends Cubit<AppState>{
   late Database database;
   IconData iconButton  = Icons.edit;
   bool isbottomsheetShown =false;
+  String mess="Tou don't Have any Task";
   var pages=[New_tasks(),Done_tasks(),Archived_tasks()];
 
   List<Map> newTasks=[];
@@ -109,7 +110,11 @@ value.forEach((element){
   }
   else ArcivedTasks.add(element);
 });
-
+if(newTasks.length>0||doneTasks.length>0||ArcivedTasks.length>0)
+{  mess="";}else{
+  mess="Tou don't Have any Task";
+}
+emit(Appmessstate());
 
       emit(Getdatabasestate());
 

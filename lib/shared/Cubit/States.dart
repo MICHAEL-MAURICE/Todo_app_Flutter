@@ -7,3 +7,4 @@
  class Updatedatabasestate extends AppState{}
  class Deletdatabasestate extends AppState{}
  class Appbottomsheetstate extends AppState{}
+ class Appmessstate extends AppState{}

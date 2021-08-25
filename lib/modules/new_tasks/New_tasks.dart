@@ -17,7 +17,15 @@ class _New_tasksState extends State<New_tasks> {
       return  Stack(
 
         children: [
-          background_img(img:'assets/imgs/1.png')
+          Column(
+            mainAxisSize: MainAxisSize.min,
+
+            children: [
+SizedBox(height: 100,),
+              background_img(img:'assets/imgs/1.png'),
+              Text(Appcubit.get(context).mess,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Colors.blue),)
+            ],
+          )
           ,ListView.separated(itemBuilder: (context,index)=>CardItem(tasks[index],context), separatorBuilder: (context,index){
 
             return Container(

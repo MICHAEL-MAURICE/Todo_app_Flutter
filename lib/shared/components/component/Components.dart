@@ -75,7 +75,7 @@ elevation: 0.0,
 mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
 
-            CircleAvatar(radius: 33,child: Center(child: Text("${m["time"]}" )),),
+            CircleAvatar(radius: 35,child: Center(child: Text("${m["time"]}" )),),
 Column(children: [
       Text(m["title"],style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold),),
       Text(m["date"]),
